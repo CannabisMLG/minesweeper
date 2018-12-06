@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="97.0" prefWidth="308.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.ispu.minesweeper.view.MSMainController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Введите размеры поля(max 30x30):" AnchorPane.leftAnchor="14.0" />
+      <TextField fx:id="n" layoutX="217.0" layoutY="10.0" prefHeight="25.0" prefWidth="35.0" />
+      <Label layoutX="256.0" layoutY="14.0" text="x" />
+      <TextField fx:id="m" layoutX="258.0" layoutY="10.0" prefHeight="25.0" prefWidth="35.0" AnchorPane.rightAnchor="14.0" />
+      <Button layoutX="302.0" layoutY="64.0" mnemonicParsing="false" onAction="#ok" text="Ok" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="14.0" />
+      <Label layoutX="14.0" layoutY="43.0" text="Введите количество мин:" AnchorPane.leftAnchor="14.0" />
+      <TextField fx:id="k" layoutX="157.0" layoutY="39.0" prefHeight="25.0" prefWidth="35.0" />
+   </children>
+</AnchorPane>
