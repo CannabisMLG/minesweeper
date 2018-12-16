@@ -1,6 +1,8 @@
 package ru.ispu.minesweeper;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -98,7 +100,7 @@ public class Mainsweeper extends Application {
 				if(pole[i][m-1] == 0)
 				{
 					for(int j = i - 1; j <= i + 1; j++)
-						for(int c = m - 2; c < m - 1; c++) if(pole[j][c] == -1) pole[i][m-1]++;
+						for(int c = m - 2; c < m; c++) if(pole[j][c] == -1) pole[i][m-1]++;
 				}
 			}
 			if(pole[0][0] != -1)
@@ -147,6 +149,7 @@ public class Mainsweeper extends Application {
 			AnchorPane page = (AnchorPane) loader.load();
 			MSMainController controller = loader.getController();
 			controller.setMain(this);
+			controller.setStage(stage);
 			Scene scene = new Scene(page);
 			stage.setScene(scene);
 			stage.show();
@@ -171,6 +174,16 @@ public class Mainsweeper extends Application {
 					b[i][j].setMaxHeight(25);
 					b[i][j].setMinHeight(25);
 					b[i][j].setPrefHeight(25);
+					Button button = b[i][j];
+					int val = pole[i][j];
+					button.setOnAction(new EventHandler<ActionEvent>() {
+					    @Override
+					    public void handle(ActionEvent event) {
+					        if(val == 0) button.setText("");
+					        else if(val == -1) button.setText("*");
+					        else button.setText(val + "");
+					    }
+					});
 					page.getChildren().add(b[i][j]);
 				}
 			Stage pStage = new Stage();

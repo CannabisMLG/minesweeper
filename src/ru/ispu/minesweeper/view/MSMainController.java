@@ -23,6 +23,12 @@ public class MSMainController {
 	private void ok()
 	{
 		main.createPole(Integer.parseInt(n.getText()), Integer.parseInt(m.getText()), Integer.parseInt(k.getText()));
+		stage.close();
+	}
+	
+	public void setStage(Stage stage)
+	{
+		this.stage = stage;
 	}
 	
 	public void setMain(Mainsweeper main)
