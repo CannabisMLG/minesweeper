@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
+import ru.ispu.minesweeper.control.MButton;
 import ru.ispu.minesweeper.view.MSMainController;
 
 public class Mainsweeper extends Application {
@@ -16,6 +17,7 @@ public class Mainsweeper extends Application {
 	private int[][] pole;
 	private Stage stage;
 	private int n, m, k;
+	private MButton[][] b;
 	
 	public void createPole(int n, int m, int k)
 	{
@@ -163,23 +165,24 @@ public class Mainsweeper extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Mainsweeper.class.getResource("view/Pole.fxml"));
 			FlowPane page = (FlowPane) loader.load();
-			Button[][] b = new Button[n][m];
+			b = new MButton[n][m];
 			for(int i = 0; i < n; i++)
 				for(int j = 0; j < m; j++)
 				{
-					b[i][j] = new Button();
+					b[i][j] = new MButton();
 					b[i][j].setMaxWidth(25);
 					b[i][j].setMinWidth(25);
 					b[i][j].setPrefWidth(25);
 					b[i][j].setMaxHeight(25);
 					b[i][j].setMinHeight(25);
 					b[i][j].setPrefHeight(25);
-					Button button = b[i][j];
+					b[i][j].setXY(j, i);
+					MButton button = b[i][j];
 					int val = pole[i][j];
 					button.setOnAction(new EventHandler<ActionEvent>() {
 					    @Override
 					    public void handle(ActionEvent event) {
-					        if(val == 0) button.setText("");
+					        if(val == 0) checkEmp(button);
 					        else if(val == -1) button.setText("*");
 					        else button.setText(val + "");
 					    }
@@ -192,6 +195,140 @@ public class Mainsweeper extends Application {
 			pStage.setWidth(m * 25 + 20); 
 			pStage.show();
 		}catch(Exception e) {e.printStackTrace();}
+	}
+	
+	public void checkEmp(MButton button)
+	{
+		int x = button.getX(), y = button.getY();
+		if(x == 0 && y == 0)
+		{
+			for(int i = y; i < y + 2; i++)
+				for(int j = x; j < x + 2; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
+		if(x == m && y == n)
+		{
+			for(int i = y - 1; i < y + 1; i++)
+				for(int j = x - 1; j < x + 1; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
+		if(x == 0 && y == n)
+		{
+			for(int i = y - 1; i < y + 1; i++)
+				for(int j = x; j < x + 2; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
+		if(x == m && y == 0)
+		{
+			for(int i = y; i < y + 2; i++)
+				for(int j = x - 1; j < x + 1; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
+		if(y == 0 && x > 0 && x < m - 1)
+		{
+			for(int i = y; i < y + 2; i++)
+				for(int j = x - 1; j < x + 2; j++)
+				{
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+				}
+		}
+		if(y == n - 1 && x > 0 && x < m - 1)
+		{
+			for(int i = y - 1; i < y + 1; i++)
+				for(int j = x - 1; j < x + 2; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
+		
+		if(x == 0 && y > 0 && y < n - 1)
+		{
+			for(int i = y - 1; i < y + 2; i++)
+				for(int j = x; j < x + 2; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
+		if(x == m && y > 0 && y < n - 1)
+		{
+			for(int i = y - 1; i < y + 2; i++)
+				for(int j = x - 1; j < x + 1; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
+		if(x > 0 && x < m - 1 && y > 0 && y < n - 1)
+		{
+			for(int i = y - 1; i < y + 2; i++)
+				for(int j = x - 1; j < x + 2; j++)
+					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
+					else if(pole[i][j] == 0)
+					{
+						if(!b[i][j].isDisable())
+						{
+							b[i][j].setDisable(true);
+							checkEmp(b[i][j]);
+						}
+					}
+		}
 	}
 	
 	@Override
