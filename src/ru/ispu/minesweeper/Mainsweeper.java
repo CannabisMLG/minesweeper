@@ -5,7 +5,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -16,7 +20,7 @@ public class Mainsweeper extends Application {
 	
 	private int[][] pole;
 	private Stage stage;
-	private int n, m, k;
+	private int n, m, k, flags;
 	private MButton[][] b;
 	
 	public void createPole(int n, int m, int k)
@@ -24,6 +28,7 @@ public class Mainsweeper extends Application {
 		this.n = n;
 		this.m = m;
 		this.k = k;
+		flags = k;
 		pole = new int[n][m];
 		for(int i = 0; i < n;i++)
 			for(int j = 0; j < m; j++)
@@ -179,20 +184,38 @@ public class Mainsweeper extends Application {
 					b[i][j].setXY(j, i);
 					MButton button = b[i][j];
 					int val = pole[i][j];
-					button.setOnAction(new EventHandler<ActionEvent>() {
-					    @Override
-					    public void handle(ActionEvent event) {
-					        if(val == 0) checkEmp(button);
-					        else if(val == -1) button.setText("*");
-					        else button.setText(val + "");
-					    }
-					});
+					button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent arg0) {
+							if(arg0.getButton() == MouseButton.PRIMARY)
+							{
+								if(val == 0 && !button.isFlag()) checkEmp(button);
+							    else if(val == -1 && !button.isFlag()) gameOver();
+							    else if(!button.isFlag()) button.setText(val + "");
+							}
+							if(arg0.getButton() == MouseButton.SECONDARY)
+							{
+								if(button.isFlag()) 
+								{
+									flags++;
+									button.changeFlag();
+								}
+								else if(flags > 0) 
+								{
+									if(button.getText().equals("?") || button.getText().equals(""))
+									{
+										flags--;
+										button.changeFlag();
+									}
+								}
+								System.out.println(flags);
+							}
+						}});
 					page.getChildren().add(b[i][j]);
 				}
 			Stage pStage = new Stage();
 			pStage.setScene(new Scene(page));
 			pStage.setHeight(n * 25 + 38);
-			pStage.setWidth(m * 25 + 20); 
+			pStage.setWidth(m * 25 + 17); 
 			pStage.show();
 		}catch(Exception e) {e.printStackTrace();}
 	}
@@ -204,6 +227,7 @@ public class Mainsweeper extends Application {
 		{
 			for(int i = y; i < y + 2; i++)
 				for(int j = x; j < x + 2; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -213,11 +237,18 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
 		if(x == m && y == n)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x - 1; j < x + 1; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -227,11 +258,18 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
 		if(x == 0 && y == n)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x; j < x + 2; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -241,11 +279,18 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
-		if(x == m && y == 0)
+		if(x == m && y == 1)
 		{
-			for(int i = y; i < y + 2; i++)
+			for(int i = 0; i < 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -255,6 +300,12 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
 		if(y == 0 && x > 0 && x < m - 1)
 		{
@@ -270,12 +321,18 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
 				}
 		}
 		if(y == n - 1 && x > 0 && x < m - 1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x - 1; j < x + 2; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -285,12 +342,19 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
 		
 		if(x == 0 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x; j < x + 2; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -300,11 +364,18 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
 		if(x == m && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -314,11 +385,18 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
 		if(x > 0 && x < m - 1 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x - 1; j < x + 2; j++)
+				{
 					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
 					else if(pole[i][j] == 0)
 					{
@@ -328,7 +406,31 @@ public class Mainsweeper extends Application {
 							checkEmp(b[i][j]);
 						}
 					}
+					if(b[i][j].isFlag()) 
+					{
+						b[i][j].changeFlag();
+						flags++;
+					}
+				}
 		}
+	}
+	
+	public void gameOver()
+	{
+		for(int i = 0; i < n; i++)
+			for(int j = 0; j < m; j++)
+				if(pole[i][j] == -1)
+				{
+					if(b[i][j].isFlag()) b[i][j].setStyle("-fx-background-color: CCFF00;");
+					else b[i][j].setStyle("-fx-background-color: FF6666;");
+					b[i][j].setText("*");
+				}
+		Alert alert = new Alert(AlertType.WARNING);
+        alert.initOwner(stage);
+        alert.setTitle("Игра окончена!");
+        alert.setHeaderText("Вы проиграли");
+        alert.setContentText(":(");
+        alert.showAndWait();
 	}
 	
 	@Override
