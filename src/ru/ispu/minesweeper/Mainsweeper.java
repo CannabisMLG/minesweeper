@@ -19,7 +19,7 @@ import ru.ispu.minesweeper.view.MSMainController;
 public class Mainsweeper extends Application {
 	
 	private int[][] pole;
-	private Stage stage;
+	private Stage stage, pStage;
 	private int n, m, k, flags;
 	private MButton[][] b;
 	
@@ -212,7 +212,7 @@ public class Mainsweeper extends Application {
 						}});
 					page.getChildren().add(b[i][j]);
 				}
-			Stage pStage = new Stage();
+			pStage = new Stage();
 			pStage.setScene(new Scene(page));
 			pStage.setHeight(n * 25 + 38);
 			pStage.setWidth(m * 25 + 17); 
@@ -244,7 +244,7 @@ public class Mainsweeper extends Application {
 					}
 				}
 		}
-		if(x == m && y == n)
+		if(x == m-1 && y == n-1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x - 1; j < x + 1; j++)
@@ -265,7 +265,7 @@ public class Mainsweeper extends Application {
 					}
 				}
 		}
-		if(x == 0 && y == n)
+		if(x == 0 && y == n-1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x; j < x + 2; j++)
@@ -286,7 +286,7 @@ public class Mainsweeper extends Application {
 					}
 				}
 		}
-		if(x == m && y == 1)
+		if(x == m-1 && y == 0)
 		{
 			for(int i = 0; i < 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
@@ -371,7 +371,7 @@ public class Mainsweeper extends Application {
 					}
 				}
 		}
-		if(x == m && y > 0 && y < n - 1)
+		if(x == m-1 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
@@ -431,6 +431,7 @@ public class Mainsweeper extends Application {
         alert.setHeaderText("Вы проиграли");
         alert.setContentText(":(");
         alert.showAndWait();
+        pStage.close();
 	}
 	
 	@Override
