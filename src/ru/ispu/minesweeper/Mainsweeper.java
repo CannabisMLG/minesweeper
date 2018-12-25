@@ -1,12 +1,10 @@
 package ru.ispu.minesweeper;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -43,6 +41,8 @@ public class Mainsweeper extends Application {
 				k--;
 			}
 		}
+		this.k = n*m;
+		System.out.println(k);
 		if(n == 1)
 		{
 			if(m != 1)
@@ -190,32 +190,42 @@ public class Mainsweeper extends Application {
 							{
 								if(val == 0 && !button.isFlag()) checkEmp(button);
 							    else if(val == -1 && !button.isFlag()) gameOver();
-							    else if(!button.isFlag()) button.setText(val + "");
+							    else if(!button.isFlag())
+								{
+									button.setText(val + "");
+									k--;
+									isWin();
+								}
+
 							}
 							if(arg0.getButton() == MouseButton.SECONDARY)
 							{
 								if(button.isFlag()) 
 								{
+									k++;
 									flags++;
 									button.changeFlag();
+									System.out.println(k);
 								}
 								else if(flags > 0) 
 								{
 									if(button.getText().equals("?") || button.getText().equals(""))
 									{
+										k--;
 										flags--;
 										button.changeFlag();
+										System.out.println(k);
 									}
 								}
-								System.out.println(flags);
 							}
 						}});
 					page.getChildren().add(b[i][j]);
 				}
 			pStage = new Stage();
 			pStage.setScene(new Scene(page));
-			pStage.setHeight(n * 25 + 38);
-			pStage.setWidth(m * 25 + 17); 
+			pStage.setHeight(n * 25 + 27);
+			pStage.setWidth(m * 25 + 8);
+			pStage.setResizable(false);
 			pStage.show();
 		}catch(Exception e) {e.printStackTrace();}
 	}
@@ -227,191 +237,79 @@ public class Mainsweeper extends Application {
 		{
 			for(int i = y; i < y + 2; i++)
 				for(int j = x; j < x + 2; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		if(x == m-1 && y == n-1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x - 1; j < x + 1; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		if(x == 0 && y == n-1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x; j < x + 2; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		if(x == m-1 && y == 0)
 		{
 			for(int i = 0; i < 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		if(y == 0 && x > 0 && x < m - 1)
 		{
 			for(int i = y; i < y + 2; i++)
 				for(int j = x - 1; j < x + 2; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		if(y == n - 1 && x > 0 && x < m - 1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x - 1; j < x + 2; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		
 		if(x == 0 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x; j < x + 2; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		if(x == m-1 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
 		}
 		if(x > 0 && x < m - 1 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x - 1; j < x + 2; j++)
-				{
-					if(pole[i][j] > 0) b[i][j].setText(pole[i][j] + "");
-					else if(pole[i][j] == 0)
-					{
-						if(!b[i][j].isDisable())
-						{
-							b[i][j].setDisable(true);
-							checkEmp(b[i][j]);
-						}
-					}
-					if(b[i][j].isFlag()) 
-					{
-						b[i][j].changeFlag();
-						flags++;
-					}
-				}
+					pr(i, j);
+		}
+	}
+
+	public void pr(int i, int j)
+	{
+		if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+		{
+			b[i][j].setText(pole[i][j] + "");
+			k--;
+		}
+		else if(pole[i][j] == 0)
+		{
+			if(!b[i][j].isDisable())
+			{
+				b[i][j].setDisable(true);
+				checkEmp(b[i][j]);
+				k--;
+			}
+		}
+		if(b[i][j].isFlag())
+		{
+			b[i][j].changeFlag();
+			flags++;
 		}
 	}
 	
@@ -432,6 +330,20 @@ public class Mainsweeper extends Application {
         alert.setContentText(":(");
         alert.showAndWait();
         pStage.close();
+	}
+
+	public void isWin()
+	{
+		if(k == 0)
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.initOwner(stage);
+			alert.setTitle("Игра окончена!");
+			alert.setHeaderText("Вы победили");
+			alert.setContentText(":)");
+			alert.showAndWait();
+			stage.close();
+		}
 	}
 	
 	@Override
