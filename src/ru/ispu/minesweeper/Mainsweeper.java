@@ -188,14 +188,15 @@ public class Mainsweeper extends Application {
 						public void handle(MouseEvent arg0) {
 							if(arg0.getButton() == MouseButton.PRIMARY)
 							{
-								if(val == 0 && !button.isFlag()) checkEmp(button);
+								if(val == 0 && !button.isFlag()) checkEmp(button, 0);
 							    else if(val == -1 && !button.isFlag()) gameOver();
-							    else if(!button.isFlag())
+							    else if(!button.isFlag() && button.getText().equals(""))
 								{
 									button.setText(val + "");
 									k--;
 									isWin();
 								}
+							    else if(!button.getText().equals("")) checkEmp(button, 1);
 
 							}
 							if(arg0.getButton() == MouseButton.SECONDARY)
@@ -230,64 +231,205 @@ public class Mainsweeper extends Application {
 		}catch(Exception e) {e.printStackTrace();}
 	}
 	
-	public void checkEmp(MButton button)
+	public void checkEmp(MButton button, int t)
 	{
 		int x = button.getX(), y = button.getY();
+		int ta = 0, fa = 0;
 		if(x == 0 && y == 0)
 		{
 			for(int i = y; i < y + 2; i++)
 				for(int j = x; j < x + 2; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+					else pr(i, j);
 		}
 		if(x == m-1 && y == n-1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x - 1; j < x + 1; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
 		if(x == 0 && y == n-1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x; j < x + 2; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
 		if(x == m-1 && y == 0)
 		{
 			for(int i = 0; i < 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
 		if(y == 0 && x > 0 && x < m - 1)
 		{
 			for(int i = y; i < y + 2; i++)
 				for(int j = x - 1; j < x + 2; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
 		if(y == n - 1 && x > 0 && x < m - 1)
 		{
 			for(int i = y - 1; i < y + 1; i++)
 				for(int j = x - 1; j < x + 2; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
 		
 		if(x == 0 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x; j < x + 2; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
 		if(x == m-1 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x - 1; j < x + 1; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
 		if(x > 0 && x < m - 1 && y > 0 && y < n - 1)
 		{
 			for(int i = y - 1; i < y + 2; i++)
 				for(int j = x - 1; j < x + 2; j++)
-					pr(i, j);
+                    if(t == 1)
+                    {
+                        if(b[i][j].isFlag() && pole[i][j] == -1) ta++;
+                        if(b[i][j].isFlag() && pole[i][j] != -1) fa++;
+                    }
+                    else pr(i, j);
 		}
+		if((fa > 0 && ta == 0)||(fa == 0 && pole[y][x] - ta != 0 && ta != 0)) gameOver();
+		if(fa == 0 && ta == pole[y][x])
+        {
+            if(x == 0 && y == 0)
+            {
+                for(int i = y; i < y + 2; i++)
+                    for(int j = x; j < x + 2; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+            if(x == m-1 && y == n-1)
+            {
+                for(int i = y - 1; i < y + 1; i++)
+                    for(int j = x - 1; j < x + 1; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+            if(x == 0 && y == n-1)
+            {
+                for(int i = y - 1; i < y + 1; i++)
+                    for(int j = x; j < x + 2; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+            if(x == m-1 && y == 0)
+            {
+                for(int i = 0; i < 2; i++)
+                    for(int j = x - 1; j < x + 1; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+            if(y == 0 && x > 0 && x < m - 1)
+            {
+                for(int i = y; i < y + 2; i++)
+                    for(int j = x - 1; j < x + 2; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+            if(y == n - 1 && x > 0 && x < m - 1)
+            {
+                for(int i = y - 1; i < y + 1; i++)
+                    for(int j = x - 1; j < x + 2; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+
+            if(x == 0 && y > 0 && y < n - 1)
+            {
+                for(int i = y - 1; i < y + 2; i++)
+                    for(int j = x; j < x + 2; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+            if(x == m-1 && y > 0 && y < n - 1)
+            {
+                for(int i = y - 1; i < y + 2; i++)
+                    for(int j = x - 1; j < x + 1; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+            if(x > 0 && x < m - 1 && y > 0 && y < n - 1)
+            {
+                for(int i = y - 1; i < y + 2; i++)
+                    for(int j = x - 1; j < x + 2; j++)
+                        if(pole[i][j] > 0 && b[i][j].getText().equals(""))
+                        {
+                            b[i][j].setText(pole[i][j] + "");
+                            k--;
+                        }
+            }
+        }
 	}
 
 	public void pr(int i, int j)
@@ -302,7 +444,7 @@ public class Mainsweeper extends Application {
 			if(!b[i][j].isDisable())
 			{
 				b[i][j].setDisable(true);
-				checkEmp(b[i][j]);
+				checkEmp(b[i][j], 0);
 				k--;
 			}
 		}

@@ -24,17 +24,20 @@ public class MSMainController {
 	@FXML 
 	private void ok()
 	{
-		if(Integer.parseInt(n.getText()) <= 30 && Integer.parseInt(m.getText()) <= 30)
+		if((Integer.parseInt(n.getText()) <= 30 && Integer.parseInt(m.getText()) <= 30)&&
+				(Integer.parseInt(n.getText()) > 5 && Integer.parseInt(m.getText()) > 5))
 		{
-			main.createPole(Integer.parseInt(n.getText()), Integer.parseInt(m.getText()), Integer.parseInt(k.getText()));
+			main.createPole(Integer.parseInt(n.getText()), Integer.parseInt(m.getText()),
+					Integer.parseInt(k.getText()));
 			stage.close();
 		}
 		else
 		{
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.initOwner(stage);
-			alert.setTitle("Некоректный ввод");
-			alert.setHeaderText("Поле должно быть не больше 30х30");
+			alert.setTitle("РћС€РёР±РєР° РІРІРѕРґР°");
+			alert.setHeaderText("РџРѕР»Рµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РЅРµ Р±РѕР»СЊС€Рµ 30С…30");
+			alert.setContentText("Р РЅРµ РјРµРЅСЊС€Рµ 6С…6");
 			alert.show();
 		}
 	}
