@@ -196,7 +196,10 @@ public class Mainsweeper extends Application {
 									k--;
 									isWin();
 								}
-							    else if(!button.getText().equals("")) checkEmp(button, 1);
+							    else if(!button.getText().equals("")) {
+							        checkEmp(button, 1);
+                                    isWin();
+                                }
 
 							}
 							if(arg0.getButton() == MouseButton.SECONDARY)
@@ -216,6 +219,7 @@ public class Mainsweeper extends Application {
 										flags--;
 										button.changeFlag();
 										System.out.println(k);
+                                        isWin();
 									}
 								}
 							}
@@ -347,6 +351,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
             if(x == m-1 && y == n-1)
             {
@@ -357,6 +362,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
             if(x == 0 && y == n-1)
             {
@@ -367,6 +373,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
             if(x == m-1 && y == 0)
             {
@@ -377,6 +384,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
             if(y == 0 && x > 0 && x < m - 1)
             {
@@ -387,6 +395,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
             if(y == n - 1 && x > 0 && x < m - 1)
             {
@@ -397,6 +406,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
 
             if(x == 0 && y > 0 && y < n - 1)
@@ -408,6 +418,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
             if(x == m-1 && y > 0 && y < n - 1)
             {
@@ -418,6 +429,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
             if(x > 0 && x < m - 1 && y > 0 && y < n - 1)
             {
@@ -428,6 +440,7 @@ public class Mainsweeper extends Application {
                             b[i][j].setText(pole[i][j] + "");
                             k--;
                         }
+                        else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
             }
         }
 	}
@@ -484,7 +497,7 @@ public class Mainsweeper extends Application {
 			alert.setHeaderText("Вы победили");
 			alert.setContentText(":)");
 			alert.showAndWait();
-			stage.close();
+			pStage.close();
 		}
 	}
 	

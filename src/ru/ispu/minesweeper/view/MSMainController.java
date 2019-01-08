@@ -35,9 +35,9 @@ public class MSMainController {
 		{
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.initOwner(stage);
-			alert.setTitle("РћС€РёР±РєР° РІРІРѕРґР°");
-			alert.setHeaderText("РџРѕР»Рµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РЅРµ Р±РѕР»СЊС€Рµ 30С…30");
-			alert.setContentText("Р РЅРµ РјРµРЅСЊС€Рµ 6С…6");
+			alert.setTitle("Ошибка ввода");
+			alert.setHeaderText("Поле должно быть не больше 30х30");
+			alert.setContentText("И не меньше 6х6");
 			alert.show();
 		}
 	}
