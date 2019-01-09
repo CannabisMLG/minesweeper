@@ -27,7 +27,7 @@ public class MSMainController {
 		if((Integer.parseInt(n.getText()) <= 30 && Integer.parseInt(m.getText()) <= 30)&&
 				(Integer.parseInt(n.getText()) > 5 && Integer.parseInt(m.getText()) > 5))
 		{
-			main.createPole(Integer.parseInt(n.getText()), Integer.parseInt(m.getText()),
+			main.showPole(Integer.parseInt(n.getText()), Integer.parseInt(m.getText()),
 					Integer.parseInt(k.getText()));
 			stage.close();
 		}

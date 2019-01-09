@@ -20,17 +20,10 @@ public class Mainsweeper extends Application {
 	private Stage stage, pStage;
 	private int n, m, k, flags;
 	private MButton[][] b;
+	private boolean fClick = true;
 	
-	public void createPole(int n, int m, int k)
+	public void createPole(int k)
 	{
-		this.n = n;
-		this.m = m;
-		this.k = k;
-		flags = k;
-		pole = new int[n][m];
-		for(int i = 0; i < n;i++)
-			for(int j = 0; j < m; j++)
-				pole[i][j] = 0;
 		while(k != 0)
 		{
 			int y = (int) (Math.random()*n);
@@ -41,6 +34,9 @@ public class Mainsweeper extends Application {
 				k--;
 			}
 		}
+		for(int i = 0; i < n; i++)
+			for(int j = 0; j < m; j++)
+				if(pole[i][j] != -1) pole[i][j] = 0;
 		this.k = n*m;
 		System.out.println(k);
 		if(n == 1)
@@ -144,7 +140,6 @@ public class Mainsweeper extends Application {
 			}
 			System.out.println();
 		}*/
-		showPole();
 	}
 	
 	public void showStartDialog()
@@ -163,8 +158,16 @@ public class Mainsweeper extends Application {
 		} catch(Exception e) {e.printStackTrace();}
 	}
 	
-	public void showPole()
+	public void showPole(int n, int m, int k1)
 	{
+		this.n = n;
+		this.m = m;
+		k = k1;
+		flags = k;
+		pole = new int[n][m];
+		for(int i = 0; i < n;i++)
+			for(int j = 0; j < m; j++)
+				pole[i][j] = 0;
 		try 
 		{
 			FXMLLoader loader = new FXMLLoader();
@@ -183,46 +186,10 @@ public class Mainsweeper extends Application {
 					b[i][j].setPrefHeight(25);
 					b[i][j].setXY(j, i);
 					MButton button = b[i][j];
-					int val = pole[i][j];
 					button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent arg0) {
-							if(arg0.getButton() == MouseButton.PRIMARY)
-							{
-								if(val == 0 && !button.isFlag()) checkEmp(button, 0);
-							    else if(val == -1 && !button.isFlag()) gameOver();
-							    else if(!button.isFlag() && button.getText().equals(""))
-								{
-									button.setText(val + "");
-									k--;
-									isWin();
-								}
-							    else if(!button.getText().equals("")) {
-							        checkEmp(button, 1);
-                                    isWin();
-                                }
-
-							}
-							if(arg0.getButton() == MouseButton.SECONDARY)
-							{
-								if(button.isFlag()) 
-								{
-									k++;
-									flags++;
-									button.changeFlag();
-									System.out.println(k);
-								}
-								else if(flags > 0) 
-								{
-									if(button.getText().equals("?") || button.getText().equals(""))
-									{
-										k--;
-										flags--;
-										button.changeFlag();
-										System.out.println(k);
-                                        isWin();
-									}
-								}
-							}
+							if(fClick) firstClick(button);
+							else stdClick(arg0, button);
 						}});
 					page.getChildren().add(b[i][j]);
 				}
@@ -233,6 +200,62 @@ public class Mainsweeper extends Application {
 			pStage.setResizable(false);
 			pStage.show();
 		}catch(Exception e) {e.printStackTrace();}
+	}
+
+	public void firstClick(MButton button)
+	{
+		pole[button.getY()][button.getX()] = 1;
+		createPole(k);
+		int val = pole[button.getY()][button.getX()];
+		if(val == 0 && !button.isFlag()) checkEmp(button, 0);
+		else {
+			button.setText(val + "");
+			k--;
+			isWin();
+		}
+		fClick = false;
+	}
+
+	public void stdClick(MouseEvent arg0, MButton button)
+	{
+		int val = pole[button.getY()][button.getX()];
+		if(arg0.getButton() == MouseButton.PRIMARY)
+		{
+			if(val == 0 && !button.isFlag()) checkEmp(button, 0);
+			else if(val == -1 && !button.isFlag()) gameOver();
+			else if(!button.isFlag() && button.getText().equals(""))
+			{
+				button.setText(val + "");
+				k--;
+				isWin();
+			}
+			else if(!button.getText().equals("")) {
+				checkEmp(button, 1);
+				isWin();
+			}
+
+		}
+		if(arg0.getButton() == MouseButton.SECONDARY)
+		{
+			if(button.isFlag())
+			{
+				k++;
+				flags++;
+				button.changeFlag();
+				System.out.println(k);
+			}
+			else if(flags > 0)
+			{
+				if(button.getText().equals("?") || button.getText().equals(""))
+				{
+					k--;
+					flags--;
+					button.changeFlag();
+					System.out.println(k);
+					isWin();
+				}
+			}
+		}
 	}
 	
 	public void checkEmp(MButton button, int t)
@@ -339,7 +362,7 @@ public class Mainsweeper extends Application {
                     }
                     else pr(i, j);
 		}
-		if((fa > 0 && ta == 0)||(fa == 0 && pole[y][x] - ta != 0 && ta != 0)) gameOver();
+		if(fa > 0) gameOver();
 		if(fa == 0 && ta == pole[y][x])
         {
             if(x == 0 && y == 0)
