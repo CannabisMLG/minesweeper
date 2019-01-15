@@ -2,7 +2,6 @@ package ru.ispu.minesweeper.control;
 
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 public class MButton extends Button {
 	private int x, y;

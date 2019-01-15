@@ -18,12 +18,13 @@ public class Mainsweeper extends Application {
 	
 	private int[][] pole;
 	private Stage stage, pStage;
-	private int n, m, k, flags;
+	private int n, m, k, flags, ck;
 	private MButton[][] b;
 	private boolean fClick = true;
 	
 	public void createPole(int k)
 	{
+		ck = k;
 		while(k != 0)
 		{
 			int y = (int) (Math.random()*n);
@@ -130,16 +131,6 @@ public class Mainsweeper extends Application {
 				}
 			}
 		}
-		/*for(int i = 0; i < n;i++)
-		{
-			for(int j = 0; j < m; j++)
-			{
-				if(pole[i][j] == 0) System.out.print(".");
-				else if(pole[i][j] == -1) System.out.print("*");
-				else System.out.print(pole[i][j]);
-			}
-			System.out.println();
-		}*/
 	}
 	
 	public void showStartDialog()
@@ -209,7 +200,7 @@ public class Mainsweeper extends Application {
 		int val = pole[button.getY()][button.getX()];
 		if(val == 0 && !button.isFlag()) checkEmp(button, 0);
 		else {
-			button.setText(val + "");
+			button.setCText(val + "", val);
 			k--;
 			isWin();
 		}
@@ -225,7 +216,7 @@ public class Mainsweeper extends Application {
 			else if(val == -1 && !button.isFlag()) gameOver();
 			else if(!button.isFlag() && button.getText().equals(""))
 			{
-				button.setText(val + "");
+				button.setCText(val + "", val);
 				k--;
 				isWin();
 			}
@@ -371,7 +362,7 @@ public class Mainsweeper extends Application {
                     for(int j = x; j < x + 2; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                 else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -382,7 +373,7 @@ public class Mainsweeper extends Application {
                     for(int j = x - 1; j < x + 1; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -393,7 +384,7 @@ public class Mainsweeper extends Application {
                     for(int j = x; j < x + 2; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -404,7 +395,7 @@ public class Mainsweeper extends Application {
                     for(int j = x - 1; j < x + 1; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -415,7 +406,7 @@ public class Mainsweeper extends Application {
                     for(int j = x - 1; j < x + 2; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -426,7 +417,7 @@ public class Mainsweeper extends Application {
                     for(int j = x - 1; j < x + 2; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -438,7 +429,7 @@ public class Mainsweeper extends Application {
                     for(int j = x; j < x + 2; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -449,7 +440,7 @@ public class Mainsweeper extends Application {
                     for(int j = x - 1; j < x + 1; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -460,7 +451,7 @@ public class Mainsweeper extends Application {
                     for(int j = x - 1; j < x + 2; j++)
                         if(pole[i][j] > 0 && b[i][j].getText().equals(""))
                         {
-                            b[i][j].setText(pole[i][j] + "");
+                            b[i][j].setCText(pole[i][j] + "", pole[i][j]);
                             k--;
                         }
                         else if(pole[i][j] == 0 && !b[i][j].isDisable()) checkEmp(b[i][j], 0);
@@ -472,7 +463,7 @@ public class Mainsweeper extends Application {
 	{
 		if(pole[i][j] > 0 && b[i][j].getText().equals(""))
 		{
-			b[i][j].setText(pole[i][j] + "");
+			b[i][j].setCText(pole[i][j] + "", pole[i][j]);
 			k--;
 		}
 		else if(pole[i][j] == 0)
@@ -512,8 +503,13 @@ public class Mainsweeper extends Application {
 
 	public void isWin()
 	{
-		if(k == 0)
+		if(k == 0 || k == ck)
 		{
+			for(int i = 0; i < n; i++)
+				for(int j = 0; j < m; j++)
+				{
+					if(pole[i][j] == -1) b[i][j].setText("?");
+				}
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.initOwner(stage);
 			alert.setTitle("Игра окончена!");
